@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+/* --- NORMAL --- */
+@font-face { font-family: 'AudiType'; src: url('/fonts/AudiType-Normal_4.03.ttf'); font-weight: 400; font-style: normal; }
+@font-face { font-family: 'AudiType'; src: url('/fonts/AudiType-Italic_4.03.ttf'); font-weight: 400; font-style: italic; }
+@font-face { font-family: 'AudiType'; src: url('/fonts/AudiType-Bold_4.03.ttf'); font-weight: 700; font-style: normal; }
+@font-face { font-family: 'AudiType'; src: url('/fonts/AudiType-BoldItalic_4.03.ttf'); font-weight: 700; font-style: italic; }
+
+/* --- EXTENDED --- */
+@font-face { font-family: 'AudiType-Ext'; src: url('/fonts/AudiType-ExtendedNormal_4.03.ttf'); font-weight: 400; font-style: normal; }
+@font-face { font-family: 'AudiType-Ext'; src: url('/fonts/AudiType-ExtendedItalic_4.03.ttf'); font-weight: 400; font-style: italic; }
+@font-face { font-family: 'AudiType-Ext'; src: url('/fonts/AudiType-ExtendedBold_4.03.ttf'); font-weight: 700; font-style: normal; }
+@font-face { font-family: 'AudiType-Ext'; src: url('/fonts/AudiType-ExtendedBoldItalic_4.03.ttf'); font-weight: 700; font-style: italic; }
+
+/* --- WIDE --- */
+@font-face { font-family: 'AudiType-Wide'; src: url('/fonts/AudiType-WideNormal_4.03.ttf'); font-weight: 400; font-style: normal; }
+@font-face { font-family: 'AudiType-Wide'; src: url('/fonts/AudiType-WideLight_4.03.ttf'); font-weight: 300; font-style: normal; }
+@font-face { font-family: 'AudiType-Wide'; src: url('/fonts/AudiType-WideBold_4.03.ttf'); font-weight: 700; font-style: normal; }
+
+
+@layer utilities {
+  .font-audi {
+    font-family: 'AudiType', sans-serif;
+  }
+  .font-audi-ext {
+    font-family: 'AudiType-Ext', sans-serif;
+  }
+  .font-audi-wide {
+    font-family: 'AudiType-Wide', sans-serif;
+  }
+}
+
+:root {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  overflow-x: hidden;
+  background-color: #101319; 
+  font-family: "AudiType", sans-serif;
+}
+
+.btn-primary-nav {
+  @apply bg-[#000] text-white py-5 border-1 border-black hover:border-[#657081] hover:border-1 hover:bg-[#2C343F] rounded-4xl items-center transition-colors;
+}
+
+.btn-primary-footer {
+  @apply bg-[#101319] text-white py-5 border-1 border-[#657081] hover:border-1 hover:bg-[#2C343F] rounded-4xl items-center transition-colors;
+}
+
+.btn-primary-body {
+  @apply border border-[#4D5460] bg-[#4D5460] text-white px-8 py-3 rounded-full hover:bg-gray-800 transition-colors font-medium hover:border hover:border-gray-600;
+}
+
+.btn-secondary-body {
+  @apply border border-gray-600 bg-[#101319] text-white px-8 py-3 rounded-full hover:bg-gray-800 transition-colors font-medium;
+}
