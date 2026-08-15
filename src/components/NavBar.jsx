@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Disclaimer from './Disclaimer';
+import Chevron from './Chevron';
 import { asset } from '../lib/asset';
 
 const iconLabels = {
@@ -56,6 +57,7 @@ function NavBar() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState(null);
+  const [openMobileItem, setOpenMobileItem] = useState(null);
   const [isDisclaimerOpen, setIsDisclaimerOpen] = useState(false);
   const [targetUrl, setTargetUrl] = useState('https://www.audi.de');
   const [gescrollt, setGescrollt] = useState(false);
@@ -90,19 +92,20 @@ function NavBar() {
         if (e.key === 'Escape') {
           setActiveSubmenu(null);
           setIsOpen(false);
+          setOpenMobileItem(null);
         }
       }}
       className={`sticky top-0 z-40 w-full transition-colors duration-300 ${
         gescrollt || isOpen || activeSubmenu ? 'bg-canvas border-b border-line' : 'bg-transparent border-b border-transparent'
       }`}
     >
-      <nav aria-label="Hauptnavigation" className="shell flex h-18 items-center justify-between gap-6">
-        <div className="flex items-center gap-10">
+      <nav aria-label="Hauptnavigation" className="shell flex h-18 items-center justify-between gap-4">
+        <div className="flex items-center gap-6">
           <Link to="/" className="flex h-12 shrink-0 items-center" aria-label="Zur Startseite von Audi x Schachbrett">
             <img src={asset('icons/Audi_Rings_wh-RGB 1.svg')} alt="" className="w-16" />
           </Link>
 
-          <ul className="hidden xl:flex items-center gap-1">
+          <ul className="hidden lg:flex items-center">
             {menuItems.map((item) => (
               <li
                 key={item.name}
@@ -113,7 +116,7 @@ function NavBar() {
                   to={item.link}
                   onClick={(e) => handleNavClick(e, item.link, item.name)}
                   aria-expanded={item.submenu ? activeSubmenu === item.name : undefined}
-                  className={`flex min-h-12 items-center rounded-pill px-4 text-ui transition-colors duration-200 hover:bg-veil ${
+                  className={`flex min-h-12 items-center rounded-pill px-3 text-ui transition-colors duration-200 hover:bg-veil ${
                     activeSubmenu === item.name ? 'text-ink' : 'text-ink-muted'
                   }`}
                 >
@@ -134,7 +137,7 @@ function NavBar() {
             Händler wählen
           </button>
 
-          <div className="hidden xl:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-1">
             {['search', 'favorite', 'user'].map((icon) => (
               <button
                 key={icon}
@@ -152,8 +155,11 @@ function NavBar() {
             type="button"
             aria-label={isOpen ? 'Menü schließen' : 'Menü öffnen'}
             aria-expanded={isOpen}
-            onClick={() => setIsOpen(!isOpen)}
-            className="btn-icon xl:hidden"
+            onClick={() => {
+              setIsOpen(!isOpen);
+              setOpenMobileItem(null);
+            }}
+            className="btn-icon lg:hidden"
           >
             <span aria-hidden="true" className="text-headline-4">{isOpen ? '✕' : '☰'}</span>
           </button>
@@ -162,33 +168,52 @@ function NavBar() {
 
       {/* Mobiles Menue — inklusive Unterseiten, die es im Hover-Flyout nur am Desktop gibt */}
       {isOpen && (
-        <div className="xl:hidden border-t border-line bg-canvas">
+        <div className="lg:hidden border-t border-line bg-canvas">
           <div className="shell max-h-[70svh] overflow-y-auto py-4">
-            {menuItems.map((item) => (
-              <div key={item.name} className="border-b border-line last:border-b-0 py-2">
-                <a
-                  href={item.link}
-                  onClick={(e) => handleNavClick(e, item.link, item.name)}
-                  className="flex min-h-12 items-center text-headline-3 text-ink"
-                >
-                  {item.name}
-                </a>
-                {item.submenu && (
-                  <div className="flex flex-col pb-2">
-                    {item.submenu.flatMap((column) => column.links).map((link) => (
-                      <button
-                        key={link}
-                        type="button"
-                        onClick={(e) => handleNavClick(e, '#', link)}
-                        className="flex min-h-11 items-center text-left text-ui text-ink-muted transition-colors hover:text-ink"
-                      >
-                        {link}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+            {menuItems.map((item) =>
+              item.submenu ? (
+                <div key={item.name} className="border-b border-line last:border-b-0 py-2">
+                  <button
+                    type="button"
+                    aria-expanded={openMobileItem === item.name}
+                    aria-controls={`mobile-submenu-${item.name}`}
+                    onClick={() => setOpenMobileItem(openMobileItem === item.name ? null : item.name)}
+                    className="flex min-h-12 w-full items-center justify-between gap-2 text-left text-headline-3 text-ink"
+                  >
+                    {item.name}
+                    <Chevron
+                      className={`size-4 shrink-0 transition-transform duration-200 ${
+                        openMobileItem === item.name ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </button>
+                  {openMobileItem === item.name && (
+                    <div id={`mobile-submenu-${item.name}`} className="flex flex-col pb-2">
+                      {item.submenu.flatMap((column) => column.links).map((link) => (
+                        <button
+                          key={link}
+                          type="button"
+                          onClick={(e) => handleNavClick(e, '#', link)}
+                          className="flex min-h-11 items-center text-left text-ui text-ink-muted transition-colors hover:text-ink"
+                        >
+                          {link}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div key={item.name} className="border-b border-line last:border-b-0 py-2">
+                  <a
+                    href={item.link}
+                    onClick={(e) => handleNavClick(e, item.link, item.name)}
+                    className="flex min-h-12 items-center text-headline-3 text-ink"
+                  >
+                    {item.name}
+                  </a>
+                </div>
+              )
+            )}
           </div>
         </div>
       )}
@@ -196,7 +221,7 @@ function NavBar() {
       {/* Desktop-Flyout */}
       {activeSubmenu && currentSubmenuData && (
         <div
-          className="hidden xl:block border-t border-line bg-canvas"
+          className="hidden lg:block border-t border-line bg-canvas"
           onMouseLeave={() => setActiveSubmenu(null)}
         >
           <div className="shell grid grid-cols-4 gap-8 py-12">

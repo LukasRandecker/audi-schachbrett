@@ -52,11 +52,11 @@
 
   /* Typo-Skala: display fuer Hero-Aussagen, headline fuer Struktur */
   --text-display-1: clamp(2.5rem, 1.929rem + 2.857vw, 4.5rem);
-  --text-display-1--line-height: 1.36;
+  --text-display-1--line-height: 1.1;
   --text-display-2: clamp(2.25rem, 1.821rem + 2.143vw, 3.75rem);
-  --text-display-2--line-height: 1.4;
+  --text-display-2--line-height: 1.1;
   --text-display-3: clamp(2rem, 1.643rem + 1.786vw, 3.25rem);
-  --text-display-3--line-height: 1.44;
+  --text-display-3--line-height: 1.15;
 
   --text-headline-1: clamp(1.75rem, 1.536rem + 1.071vw, 2.5rem);
   --text-headline-1--line-height: 1.44;
@@ -130,56 +130,62 @@ body {
 
 /* ---------------------------------------------------------------
    Komponentenklassen
+   In @layer components, damit Utility-Klassen wie lg:hidden diese
+   Regeln zuverlaessig ueberstimmen koennen (CSS-Cascade-Layers:
+   unlayered Regeln schlagen sonst jede Layer-Regel, unabhaengig
+   von Quelltext-Reihenfolge oder Spezifitaet).
    --------------------------------------------------------------- */
 
-/* Seitenraster: mittig, gedeckelt, mit Seitenrand aus dem Token */
-.shell {
-  @apply w-full max-w-shell mx-auto px-page;
-}
+@layer components {
+  /* Seitenraster: mittig, gedeckelt, mit Seitenrand aus dem Token */
+  .shell {
+    @apply w-full max-w-shell mx-auto px-page;
+  }
 
-/* Buttons — audi.de: 48px hoch, vollstaendig gerundet, AudiType 14px */
-.btn-primary,
-.btn-secondary,
-.btn-ghost {
-  @apply inline-flex items-center justify-center gap-2 min-h-12 px-6 rounded-pill
-         text-ui font-audi whitespace-nowrap
-         transition-colors duration-200;
-}
+  /* Buttons — audi.de: 48px hoch, vollstaendig gerundet, AudiType 14px */
+  .btn-primary,
+  .btn-secondary,
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 min-h-12 px-6 rounded-pill
+           text-ui font-audi whitespace-nowrap
+           transition-colors duration-200;
+  }
 
-.btn-primary {
-  @apply bg-ink text-canvas hover:bg-ink-muted;
-}
+  .btn-primary {
+    @apply bg-ink text-canvas hover:bg-ink-muted;
+  }
 
-.btn-secondary {
-  @apply border border-line-strong text-ink hover:bg-veil;
-}
+  .btn-secondary {
+    @apply border border-line-strong text-ink hover:bg-veil;
+  }
 
-.btn-ghost {
-  @apply text-ink hover:bg-veil;
-}
+  .btn-ghost {
+    @apply text-ink hover:bg-veil;
+  }
 
-/* Runder Icon-Button, 48x48 — shrink-0, damit er in engen Flex-Zeilen nicht schmaler wird */
-.btn-icon {
-  @apply inline-flex shrink-0 items-center justify-center size-12 rounded-pill
-         text-ink transition-colors duration-200 hover:bg-veil;
-}
+  /* Runder Icon-Button, 48x48 — shrink-0, damit er in engen Flex-Zeilen nicht schmaler wird */
+  .btn-icon {
+    @apply inline-flex shrink-0 items-center justify-center size-12 rounded-pill
+           text-ink transition-colors duration-200 hover:bg-veil;
+  }
 
-/* Textlink mit Pfeil, wie in den Audi-Teasern */
-.link-arrow {
-  @apply inline-flex items-center gap-2 min-h-11 text-ui text-ink
-         transition-opacity duration-200 hover:opacity-70;
-}
+  /* Textlink mit Pfeil, wie in den Audi-Teasern */
+  .link-arrow {
+    @apply inline-flex items-center gap-2 min-h-11 text-ui text-ink
+           transition-opacity duration-200 hover:opacity-70;
+  }
 
-.link-arrow::after {
-  content: "";
-  width: 0.5rem;
-  height: 0.5rem;
-  border-top: 1px solid currentColor;
-  border-right: 1px solid currentColor;
-  transform: rotate(45deg);
-}
+  .link-arrow::after {
+    content: "";
+    width: 0.5rem;
+    height: 0.5rem;
+    border-top: 1px solid currentColor;
+    border-right: 1px solid currentColor;
+    transform: rotate(45deg);
+  }
 
-/* Bildrahmen mit Markenradius */
-.media {
-  @apply overflow-hidden rounded-card bg-surface;
+  /* Bildrahmen mit Markenradius */
+  .media {
+    @apply overflow-hidden rounded-card bg-surface;
+  }
 }

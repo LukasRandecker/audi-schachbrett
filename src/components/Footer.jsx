@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Disclaimer from './Disclaimer';
+import Chevron from './Chevron';
 import { asset } from '../lib/asset';
 
 const AUDI_URL = 'https://www.audi.de';
@@ -44,6 +45,19 @@ const socialIcons = [
 function Footer() {
   const [isDisclaimerOpen, setIsDisclaimerOpen] = useState(false);
   const [targetUrl, setTargetUrl] = useState(AUDI_URL);
+  const [openColumns, setOpenColumns] = useState(() => new Set());
+
+  const toggleColumn = (title) => {
+    setOpenColumns((prev) => {
+      const next = new Set(prev);
+      if (next.has(title)) {
+        next.delete(title);
+      } else {
+        next.add(title);
+      }
+      return next;
+    });
+  };
 
   const openDisclaimer = (url = AUDI_URL) => {
     setTargetUrl(url);
@@ -61,29 +75,43 @@ function Footer() {
         <div className="flex justify-end">
           <button type="button" onClick={scrollToTop} className="btn-ghost">
             Zurück nach oben
-            <span aria-hidden="true" className="inline-block size-2 -translate-y-px rotate-[-45deg] border-t border-r border-current" />
+            <Chevron className="size-4 rotate-180" />
           </button>
         </div>
 
         <div className="mt-10 grid gap-x-6 gap-y-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-          {linkColumns.map((column) => (
-            <div key={column.title}>
-              <h2 className="text-headline-4 text-ink">{column.title}</h2>
-              <ul className="mt-4">
-                {column.links.map((link) => (
-                  <li key={link}>
-                    <button
-                      type="button"
-                      onClick={() => openDisclaimer()}
-                      className="flex min-h-11 w-full items-center py-1 text-left text-ui text-ink-muted transition-colors hover:text-ink"
-                    >
-                      {link}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {linkColumns.map((column) => {
+            const isOpen = openColumns.has(column.title);
+            return (
+              <div key={column.title}>
+                <button
+                  type="button"
+                  aria-expanded={isOpen}
+                  aria-controls={`footer-column-${column.title}`}
+                  onClick={() => toggleColumn(column.title)}
+                  className="flex min-h-11 w-full items-center justify-between gap-2 text-left text-headline-4 text-ink sm:min-h-0 sm:cursor-default"
+                >
+                  {column.title}
+                  <Chevron
+                    className={`size-4 shrink-0 transition-transform duration-200 sm:hidden ${isOpen ? 'rotate-180' : ''}`}
+                  />
+                </button>
+                <ul id={`footer-column-${column.title}`} className={`mt-4 ${isOpen ? 'block' : 'hidden'} sm:block`}>
+                  {column.links.map((link) => (
+                    <li key={link}>
+                      <button
+                        type="button"
+                        onClick={() => openDisclaimer()}
+                        className="flex min-h-11 w-full items-center py-1 text-left text-ui text-ink-muted transition-colors hover:text-ink"
+                      >
+                        {link}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
         </div>
 
         <div className="mt-16 flex flex-wrap gap-2">

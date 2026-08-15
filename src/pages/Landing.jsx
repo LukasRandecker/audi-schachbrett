@@ -45,7 +45,12 @@ function LandingPage() {
 
       <ModelTeaser />
 
-      <HeroBild image="/images/Werbeposter_D.jpg" alt="Werbemotiv des Audi Schachbretts" />
+      <HeroBild
+        image="/images/Werbeposter_D.jpg"
+        alt="Werbemotiv des Audi Schachbretts"
+        width={1440}
+        height={718}
+      />
 
       <News />
 

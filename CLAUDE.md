@@ -53,7 +53,8 @@ Die Tokens in `src/index.css` (`@theme`) sind **am 14.08.2026 an audi.de gemesse
 - Seitenraster immer über `.shell` — die Klasse hält Seitenrand und Maximalbreite zusammen.
 - Asset-Pfade über `asset()` aus `src/lib/asset.js` bzw. `%BASE_URL%` in `index.html`.
 - Keine Viewport-Einheiten für Elementgrößen (`w-[22vw]` o. ä.). Raster und Seitenverhältnisse statt vw.
-- Die Desktop-Navigation schaltet erst ab `xl` (1280 px) frei — bei `lg` passt sie rechnerisch nicht in eine Zeile.
+- Die Desktop-Navigation schaltet ab `lg` (1024 px) frei — darunter (Tablet/Mobil) zeigt die Leiste das Burger-Menü. Damit die Navigation bei `lg` in eine Zeile passt, sind die Abstände dort knapper (`gap-6`/`px-3` statt `gap-10`/`px-4`).
+- Alle Komponentenklassen in `src/index.css` (`.shell`, `.btn-*`, `.media`, ...) liegen in `@layer components`. Ohne dieses Layer schlagen sie laut CSS-Cascade-Layers *jede* Tailwind-Utility (z. B. `lg:hidden`) unabhängig von Quelltext-Reihenfolge oder Spezifität — das war die Ursache, warum das Burger-Menü nie verschwand.
 
 ## Bewusste Entscheidungen
 - **JavaScript statt TypeScript.** Das Projekt ist inhaltlich fertig; eine nachträgliche Migration bringt hier keinen Erkenntnisgewinn, der den Aufwand rechtfertigt. Das gilt für dieses Projekt, nicht als Abweichung vom Standard: **jedes neue Projekt startet weiter in TypeScript ab der ersten Datei.**

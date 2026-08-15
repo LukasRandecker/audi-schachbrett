@@ -1,14 +1,22 @@
 import { asset } from '../lib/asset';
 
-/** Vollflaechiges Standbild im gleichen Kinoformat wie der Video-Hero. */
-function HeroBild({ image, alt = '' }) {
+/**
+ * Vollflaechiges Bannerbild mit eingebrannter Schrift.
+ * Anders als der Video-Hero wird hier nicht auf ein Kinoformat
+ * zugeschnitten — ein Crop wuerde den Schriftzug im Bild auf
+ * schmalen Viewports abschneiden. Stattdessen laeuft das Bild
+ * immer ueber die volle Breite in seinem eigenen Seitenverhaeltnis.
+ */
+function HeroBild({ image, alt = '', width, height }) {
   return (
     <section className="w-full bg-surface">
       <img
         src={asset(image)}
         alt={alt}
+        width={width}
+        height={height}
         loading="lazy"
-        className="aspect-[4/5] max-h-[88svh] w-full object-cover object-center sm:aspect-[16/9] lg:aspect-[2.25/1]"
+        className="h-auto w-full"
       />
     </section>
   );
