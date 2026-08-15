@@ -1,32 +1,19 @@
 const InfoGrid = ({ items }) => {
-  return (
-    <section className="bg-[#101319] py-12 px-6 md:px-22">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-1"> 
-        {items.map((item, index) => {
-       
-          const isFirst = index === 0;
-          const isLast = index === items.length - 1;
+  if (!items?.length) return null;
 
-          return (
-            <div 
-              key={index} 
-              className={`
-                bg-[#1d2127] p-8 flex flex-col 
-                ${isFirst ? "md:rounded-l-2xl rounded-t-2xl md:rounded-tr-none" : ""} 
-                ${isLast ? "md:rounded-r-2xl rounded-b-2xl md:rounded-bl-none" : ""}
-                border-r last:border-r-0
-              `}
-            >
-              <h3 className="text-white text-xl font-audi-ext mb-4">
-                {item.title}
-              </h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                {item.text}
-              </p>
-            </div>
-          );
-        })}
-      </div>
+  return (
+    <section className="shell pb-block">
+      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {items.map((item) => (
+          <li
+            key={item.title}
+            className="flex flex-col rounded-card bg-surface p-8 lg:p-10"
+          >
+            <h3 className="text-headline-3 text-ink">{item.title}</h3>
+            <p className="mt-4 text-ui text-ink-muted text-pretty">{item.text}</p>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 };

@@ -1,56 +1,185 @@
 @import "tailwindcss";
 
-/* --- NORMAL --- */
-@font-face { font-family: 'AudiType'; src: url('/fonts/AudiType-Normal_4.03.ttf'); font-weight: 400; font-style: normal; }
-@font-face { font-family: 'AudiType'; src: url('/fonts/AudiType-Italic_4.03.ttf'); font-weight: 400; font-style: italic; }
-@font-face { font-family: 'AudiType'; src: url('/fonts/AudiType-Bold_4.03.ttf'); font-weight: 700; font-style: normal; }
-@font-face { font-family: 'AudiType'; src: url('/fonts/AudiType-BoldItalic_4.03.ttf'); font-weight: 700; font-style: italic; }
+/* ---------------------------------------------------------------
+   Schrift
+   Der aktuelle Audi-Auftritt nutzt ausschliesslich AudiType Regular.
+   Extended und Wide kommen dort nicht vor — deshalb hier auch nicht.
+   --------------------------------------------------------------- */
 
-/* --- EXTENDED --- */
-@font-face { font-family: 'AudiType-Ext'; src: url('/fonts/AudiType-ExtendedNormal_4.03.ttf'); font-weight: 400; font-style: normal; }
-@font-face { font-family: 'AudiType-Ext'; src: url('/fonts/AudiType-ExtendedItalic_4.03.ttf'); font-weight: 400; font-style: italic; }
-@font-face { font-family: 'AudiType-Ext'; src: url('/fonts/AudiType-ExtendedBold_4.03.ttf'); font-weight: 700; font-style: normal; }
-@font-face { font-family: 'AudiType-Ext'; src: url('/fonts/AudiType-ExtendedBoldItalic_4.03.ttf'); font-weight: 700; font-style: italic; }
-
-/* --- WIDE --- */
-@font-face { font-family: 'AudiType-Wide'; src: url('/fonts/AudiType-WideNormal_4.03.ttf'); font-weight: 400; font-style: normal; }
-@font-face { font-family: 'AudiType-Wide'; src: url('/fonts/AudiType-WideLight_4.03.ttf'); font-weight: 300; font-style: normal; }
-@font-face { font-family: 'AudiType-Wide'; src: url('/fonts/AudiType-WideBold_4.03.ttf'); font-weight: 700; font-style: normal; }
-
-
-@layer utilities {
-  .font-audi {
-    font-family: 'AudiType', sans-serif;
-  }
-  .font-audi-ext {
-    font-family: 'AudiType-Ext', sans-serif;
-  }
-  .font-audi-wide {
-    font-family: 'AudiType-Wide', sans-serif;
-  }
+@font-face {
+  font-family: 'AudiType';
+  src: url('/fonts/AudiType-Normal_4.03.ttf');
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
 }
+@font-face {
+  font-family: 'AudiType';
+  src: url('/fonts/AudiType-Italic_4.03.ttf');
+  font-display: swap;
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'AudiType';
+  src: url('/fonts/AudiType-Bold_4.03.ttf');
+  font-display: swap;
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* ---------------------------------------------------------------
+   Design-Tokens
+   Werte am 14.08.2026 an audi.de gemessen. Die Groessen dort sind
+   in vier Stufen gestaffelt (320 / 768 / 1024 / 1440) — hier als
+   clamp() nachgebaut, damit auch krumme Breiten sauber sitzen.
+   --------------------------------------------------------------- */
+
+@theme {
+  /* Flaechen und Text */
+  --color-canvas: #101319;
+  --color-surface: #181d25;
+  --color-surface-raised: #2a3340;
+  --color-ink: #fcfcfd;
+  --color-ink-muted: rgb(252 252 253 / 0.7);
+  --color-ink-faint: rgb(252 252 253 / 0.5);
+  --color-line: rgb(219 223 230 / 0.18);
+  --color-line-strong: rgb(219 223 230 / 0.38);
+  --color-veil: rgb(154 163 177 / 0.1);
+
+  /* Schrift */
+  --font-audi: 'AudiType', sans-serif;
+
+  /* Typo-Skala: display fuer Hero-Aussagen, headline fuer Struktur */
+  --text-display-1: clamp(2.5rem, 1.929rem + 2.857vw, 4.5rem);
+  --text-display-1--line-height: 1.36;
+  --text-display-2: clamp(2.25rem, 1.821rem + 2.143vw, 3.75rem);
+  --text-display-2--line-height: 1.4;
+  --text-display-3: clamp(2rem, 1.643rem + 1.786vw, 3.25rem);
+  --text-display-3--line-height: 1.44;
+
+  --text-headline-1: clamp(1.75rem, 1.536rem + 1.071vw, 2.5rem);
+  --text-headline-1--line-height: 1.44;
+  --text-headline-2: clamp(1.5rem, 1.357rem + 0.714vw, 2rem);
+  --text-headline-2--line-height: 1.38;
+  --text-headline-3: clamp(1.25rem, 1.179rem + 0.357vw, 1.5rem);
+  --text-headline-3--line-height: 1.5;
+  --text-headline-4: clamp(1rem, 0.964rem + 0.179vw, 1.125rem);
+  --text-headline-4--line-height: 1.55;
+
+  --text-copy: 1.125rem;
+  --text-copy--line-height: 1.56;
+  --text-ui: 0.875rem;
+  --text-ui--line-height: 1.5;
+  --text-fine: 0.75rem;
+  --text-fine--line-height: 1.67;
+
+  /* Seitenrand: 16px bei 320 bis 96px bei 1440 */
+  --spacing-page: clamp(1rem, 7.143vw - 0.429rem, 6rem);
+
+  /* Vertikale Rhythmik der Sektionen */
+  --spacing-block: clamp(3.5rem, 1.75rem + 8.75vw, 7.5rem);
+  --spacing-block-tight: clamp(2.5rem, 1.5rem + 5vw, 4.5rem);
+
+  /* Radien */
+  --radius-card: 20px;
+  --radius-inset: 10px;
+  --radius-pill: 999px;
+
+  /* Rasterbreite */
+  --container-shell: 1920px;
+}
+
+/* ---------------------------------------------------------------
+   Basis
+   --------------------------------------------------------------- */
 
 :root {
-  margin: 0;
-  padding: 0;
-  width: 100vw;
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-audi);
   overflow-x: hidden;
-  background-color: #101319; 
-  font-family: "AudiType", sans-serif;
 }
 
-.btn-primary-nav {
-  @apply bg-[#000] text-white py-5 border-1 border-black hover:border-[#657081] hover:border-1 hover:bg-[#2C343F] rounded-4xl items-center transition-colors;
+body {
+  margin: 0;
+  background-color: var(--color-canvas);
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
-.btn-primary-footer {
-  @apply bg-[#101319] text-white py-5 border-1 border-[#657081] hover:border-1 hover:bg-[#2C343F] rounded-4xl items-center transition-colors;
+/* Sichtbarer, markenkonformer Fokus statt Browser-Default */
+:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
-.btn-primary-body {
-  @apply border border-[#4D5460] bg-[#4D5460] text-white px-8 py-3 rounded-full hover:bg-gray-800 transition-colors font-medium hover:border hover:border-gray-600;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
-.btn-secondary-body {
-  @apply border border-gray-600 bg-[#101319] text-white px-8 py-3 rounded-full hover:bg-gray-800 transition-colors font-medium;
+/* ---------------------------------------------------------------
+   Komponentenklassen
+   --------------------------------------------------------------- */
+
+/* Seitenraster: mittig, gedeckelt, mit Seitenrand aus dem Token */
+.shell {
+  @apply w-full max-w-shell mx-auto px-page;
+}
+
+/* Buttons — audi.de: 48px hoch, vollstaendig gerundet, AudiType 14px */
+.btn-primary,
+.btn-secondary,
+.btn-ghost {
+  @apply inline-flex items-center justify-center gap-2 min-h-12 px-6 rounded-pill
+         text-ui font-audi whitespace-nowrap
+         transition-colors duration-200;
+}
+
+.btn-primary {
+  @apply bg-ink text-canvas hover:bg-ink-muted;
+}
+
+.btn-secondary {
+  @apply border border-line-strong text-ink hover:bg-veil;
+}
+
+.btn-ghost {
+  @apply text-ink hover:bg-veil;
+}
+
+/* Runder Icon-Button, 48x48 — shrink-0, damit er in engen Flex-Zeilen nicht schmaler wird */
+.btn-icon {
+  @apply inline-flex shrink-0 items-center justify-center size-12 rounded-pill
+         text-ink transition-colors duration-200 hover:bg-veil;
+}
+
+/* Textlink mit Pfeil, wie in den Audi-Teasern */
+.link-arrow {
+  @apply inline-flex items-center gap-2 min-h-11 text-ui text-ink
+         transition-opacity duration-200 hover:opacity-70;
+}
+
+.link-arrow::after {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-top: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  transform: rotate(45deg);
+}
+
+/* Bildrahmen mit Markenradius */
+.media {
+  @apply overflow-hidden rounded-card bg-surface;
 }

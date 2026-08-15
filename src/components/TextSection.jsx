@@ -1,13 +1,14 @@
-const TextSection = ({ headline, text }) => {
+const TextSection = ({ headline, text, eyebrow, headingAs = 'h2' }) => {
+  const Heading = headingAs;
+
   return (
-    <section className="bg-[#101319] py-12 px-6 md:px-22">
+    <section className="shell py-block">
       <div className="max-w-3xl">
-        <h2 className="font-audi-ext text-3xl md:text-4xl text-white mb-6">
-          {headline}
-        </h2>
-        <p className="font-audi-wide text-gray-400 text-base md:text-lg leading-relaxed">
-          {text}
-        </p>
+        {eyebrow && (
+          <p className="mb-4 text-fine uppercase tracking-[0.14em] text-ink-faint">{eyebrow}</p>
+        )}
+        <Heading className="text-display-3 text-ink text-balance">{headline}</Heading>
+        <p className="mt-6 max-w-2xl text-copy text-ink-muted text-pretty">{text}</p>
       </div>
     </section>
   );

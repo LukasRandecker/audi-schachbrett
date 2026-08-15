@@ -1,24 +1,26 @@
-import CTA from "../components/CTA";
+import { useNavigate } from 'react-router-dom';
 
-import { useNavigate } from "react-router-dom";
+import CTA from '../components/CTA';
 
 function ErrorPage() {
   const navigate = useNavigate();
 
-    const CatItem = {
-    headline: "Entschuldigung",
-    description: "Eine Vorbestellung des Produkts ist aktuell nicht mehr möglich oder die gewünschte Seite konnte nicht gefunden werden.",
-    primaryText: "Startseite",
-    secondaryText: "Premium entdecken",
-    primaryAction: () =>  { window.scrollTo(0, 0); navigate("/schachbrett")}, 
-    secondaryAction: () =>  { window.scrollTo(0, 0); navigate("/premium")}
+  const gehZu = (pfad) => () => {
+    window.scrollTo(0, 0);
+    navigate(pfad);
   };
 
-  return (
-    <>
-     <CTA CatItem={CatItem} />
-    </>
-  );
+  const hinweis = {
+    headline: 'Diese Seite gibt es hier nicht.',
+    description:
+      'Eine Vorbestellung ist in diesem Studienprojekt nicht möglich — und die gesuchte Seite konnten wir nicht finden. Von hier kommen Sie zurück in das Projekt.',
+    primaryText: 'Zur Startseite',
+    secondaryText: 'Premium entdecken',
+    primaryAction: gehZu('/'),
+    secondaryAction: gehZu('/premium'),
+  };
+
+  return <CTA CatItem={hinweis} headingAs="h1" />;
 }
 
 export default ErrorPage;
