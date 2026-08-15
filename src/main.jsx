@@ -25,7 +25,7 @@ const router = createHashRouter([
       { path: "*", element: <ErrorPage /> },
     ],
   },
-]); 
+]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

@@ -10,14 +10,17 @@ import { asset } from '../lib/asset';
 function HeroBild({ image, alt = '', width, height }) {
   return (
     <section className="w-full bg-surface">
-      <img
-        src={asset(image)}
-        alt={alt}
-        width={width}
-        height={height}
-        loading="lazy"
-        className="h-auto w-full"
-      />
+      <picture>
+        <source srcSet={asset(image.replace(/\.jpg$/, '.webp'))} type="image/webp" />
+        <img
+          src={asset(image)}
+          alt={alt}
+          width={width}
+          height={height}
+          loading="lazy"
+          className="h-auto w-full"
+        />
+      </picture>
     </section>
   );
 }

@@ -47,6 +47,8 @@ const News = () => {
               <img
                 src={asset(thema.img)}
                 alt=""
+                width={800}
+                height={450}
                 loading="lazy"
                 className="size-full object-cover"
               />

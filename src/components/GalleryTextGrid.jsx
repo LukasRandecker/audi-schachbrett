@@ -26,12 +26,17 @@ const GalleryTextGrid = ({ headline, galleryItems }) => {
             className={`flex flex-col ${item.isWide ? 'md:col-span-8' : 'md:col-span-4'}`}
           >
             <div className={`media ${item.isWide ? 'aspect-[16/9]' : 'aspect-[3/4] md:aspect-[8/9]'}`}>
-              <img
-                src={asset(item.img)}
-                alt={item.alt ?? ''}
-                loading="lazy"
-                className="size-full object-cover"
-              />
+              <picture>
+                <source srcSet={asset(item.img.replace(/\.jpg$/, '.webp'))} type="image/webp" />
+                <img
+                  src={asset(item.img)}
+                  alt={item.alt ?? ''}
+                  width={item.isWide ? 804 : 436}
+                  height={503}
+                  loading="lazy"
+                  className="size-full object-cover"
+                />
+              </picture>
             </div>
 
             <figcaption className="mt-6 max-w-prose text-ui text-ink-muted text-pretty">

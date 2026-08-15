@@ -33,12 +33,17 @@ const ModelTeaser = () => {
         {modelle.map((modell) => (
           <li key={modell.title} className="flex flex-col">
             <div className="media aspect-[3/4]">
-              <img
-                src={asset(modell.img)}
-                alt=""
-                loading="lazy"
-                className="size-full object-cover"
-              />
+              <picture>
+                <source srcSet={asset(modell.img.replace(/\.jpg$/, '.webp'))} type="image/webp" />
+                <img
+                  src={asset(modell.img)}
+                  alt=""
+                  width={1254}
+                  height={1254}
+                  loading="lazy"
+                  className="size-full object-cover"
+                />
+              </picture>
             </div>
 
             <h3 className="mt-6 text-headline-2 text-ink">{modell.title}</h3>
