@@ -13,7 +13,7 @@ Portfolio
 - Styling: Tailwind 4 über `@tailwindcss/vite`. Designsystem als `@theme`-Tokens in `src/index.css`, Komponentenklassen per `@apply` ebenda
 - Datenbank: keine
 - Auth: keiner
-- Hosting: GitHub Pages, automatisch per `.github/workflows/main.yml` bei Push auf `main`
+- Hosting: Cloudflare Pages unter `audi.lukasrandecker.de`, Build direkt aus dem Repo bei Push auf `main` (Git-Integration von Cloudflare, kein GitHub-Actions-Workflow)
 - Node-Version: 20 (so im Workflow festgelegt)
 
 ## Befehle
@@ -29,7 +29,7 @@ Es gibt **kein** `typecheck` und **kein** `test` — bewusst nicht erfunden, sie
 - `src/App.jsx` ist nur die Layout-Hülle: NavBar, `<main><Outlet /></main>`, Footer. Keine Logik.
 - `src/pages/` = eine Datei pro Route. `src/components/` = wiederverwendbare Blöcke.
 - `src/lib/asset.js` baut alle Asset-Pfade auf dem Deploy-Basispfad auf.
-- `vite.config.js` setzt `base` auf den GitHub-Pages-Unterpfad. Der Wert muss exakt dem Repo-Namen entsprechen, sonst laden Assets im Deploy nicht.
+- `vite.config.js` setzt `base` auf `/`. Die Seite liegt auf einer eigenen Subdomain an der Wurzel — bei einem Unterpfad-Deploy müsste der Wert exakt dem Unterpfad entsprechen, sonst laden die Assets nicht.
 
 ## Designsystem
 Die Tokens in `src/index.css` (`@theme`) sind **am 14.08.2026 an audi.de gemessen**, nicht geschätzt:
@@ -65,7 +65,7 @@ Die Tokens in `src/index.css` (`@theme`) sind **am 14.08.2026 an audi.de gemesse
 
 ## Bekannte Baustellen
 - [ ] Bilder neu ausspielen: Quellen sind nur 436–804 px breit und werden auf großen Schirmen bis 2× hochskaliert; gleichzeitig ~485 kB pro Datei. Dabei `width`/`height` setzen (DoD 6)
-- [ ] `Premium.mp4` ist 23 MB und startet als Autoplay-Hero (DoD 6, DoD 10 „Fast 3G")
+- [x] ~~`Premium.mp4` ist 23 MB~~ — Videos sind mit cd80443 komprimiert. Größte Datei im Build ist jetzt `Premium.mp4` mit 2,0 MB, `dist/` gesamt 11 MB (gemessen 05.09.2026). Der Autoplay-Hero bleibt trotzdem ein Posten für DoD 10 „Fast 3G"
 - [ ] Lighthouse Mobile, Kontrastwerte, axe DevTools: nie gemessen (DoD 4, DoD 6)
 - [ ] `sitemap.xml` und Canonical fehlen — brauchen die echte Deploy-URL (DoD 7)
 - [ ] Ohne JavaScript sind die Kerninhalte nicht im HTML (SPA, DoD 7)
@@ -73,9 +73,23 @@ Die Tokens in `src/index.css` (`@theme`) sind **am 14.08.2026 an audi.de gemesse
 - [ ] Realitätstest offen: echtes Handy, fremdes Gerät, Fast 3G, 30-Sekunden-Test (DoD 10)
 
 ## Nicht anfassen
-- Dauerhaft tabu ohne Rückfrage: `public/fonts/`, Audi-Markenassets in `public/icons/`, `base` in `vite.config.js`, `.github/workflows/main.yml`.
+- Dauerhaft tabu ohne Rückfrage: `public/fonts/`, Audi-Markenassets in `public/icons/`, `base` in `vite.config.js`.
+- Der Rechtshinweis im Footer (`<aside>` in `src/components/Footer.jsx`) ist kein Designelement, sondern der einzige echte Text in einem sonst nachgebauten Footer. Er bleibt sichtbar im Fluss — nicht in ein Aufklapp-Element verschieben, nicht in die Schriftgröße der nachgebauten Rechtslinks abstufen.
+
+## Freigaben
+- **05.09.2026 — `base` in `vite.config.js` von `/Responsive-Design---Audi-x-Schachbrett/` auf `/` geändert.** Ausdrücklich von Lukas freigegeben. Grund: Die Seite liegt auf der eigenen Subdomain `audi.lukasrandecker.de` an der Wurzel; mit dem alten Unterpfad hätte kein einziges Asset geladen. Gleichzeitig entschieden: **kein Hosting auf GitHub Pages mehr** — `.github/workflows/main.yml` ist entfernt, gebaut wird über die Git-Integration von Cloudflare Pages. GitHub Pages lieferte zu diesem Zeitpunkt auf beiden möglichen Adressen ohnehin 404, es ging also nichts Laufendes verloren.
 
 ## Zuletzt geprüft
+
+Stand 05.09.2026, Deploy-Vorbereitung für Cloudflare Pages — am Produktions-Build mit `base: "/"` gemessen:
+- `npm ci` + `npm run build`: **geprüft**, fehlerfrei. `dist/` = 11 MB in 64 Dateien
+- Cloudflare-Grenzen (25 MiB je Datei, 20.000 Dateien): **geprüft**, keine Datei über 25 MB. Größte ist `video/Premium.mp4` mit 1,9 MB
+- Alte `base` im Build: **geprüft**, kein Vorkommen von `Responsive-Design---Audi-x-Schachbrett` in `dist/`. Schriften, Icons und Bilder liegen auf `/…`
+- `npm run preview`, alle fünf Routen (`/`, `#/ikonen`, `#/innovation`, `#/premium`, `#/schachbrett`): **geprüft**, jeder Request 200 oder 206, kein 404. Konsole leer
+- Footer-Rechtshinweis bei 375 px und Desktop: **geprüft**, sichtbar ohne Aufklappen, 0 px horizontaler Überlauf
+- `npm run lint`: **geprüft**, keine Befunde
+- Nicht geprüft, weil die Domain noch nicht steht: HTTPS-Aufruf unter `audi.lukasrandecker.de`, Verhalten hinter dem Cloudflare-CDN
+
 Stand 14.08.2026, nach dem Design-Umbau erneut am Produktions-Build gemessen:
 - Responsive 320–2560: **geprüft**. Breiten 320 / 375 / 620 / 640 / 768 / 1024 / 1280 / 1440 / 1920 / 2560 auf allen fünf Routen — 0 überlaufende Elemente, keine Layoutbrüche
 - Tokens gegen audi.de abgeglichen: Seitenrand 16 px bei 320 und 96 px bei 1440, Inhalt bei 2560 auf 1920 px gedeckelt, Buttons 48 px / 999 px, Kartenradius 20 px — alles deckungsgleich

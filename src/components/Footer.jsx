@@ -129,7 +129,25 @@ function Footer() {
         </div>
 
         <div className="mt-12 border-t border-line pt-8">
-          <ul className="flex flex-wrap gap-x-6">
+          {/* Echter Rechtshinweis — der einzige Block im Footer, der nicht Teil des
+              Nachbaus ist. Steht deshalb vor den nachgebauten Rechtslinks und offen
+              im Fluss, nicht in einem aufklappbaren Element. */}
+          <aside className="rounded-card border border-line-strong bg-surface p-6">
+            <h2 className="text-headline-4 text-ink">Hinweis zu diesem Projekt</h2>
+            <p className="mt-3 max-w-prose text-ui text-ink-muted text-pretty">
+              Dies ist ein Hochschulprojekt zum Thema Responsive Design und{' '}
+              <strong className="font-normal text-ink">
+                keine offizielle Website der AUDI AG
+              </strong>
+              . Es entstand nicht im Auftrag der AUDI AG, und es besteht keine Verbindung
+              zum Unternehmen. Der Name Audi, die vier Ringe, die AudiType-Schriften sowie
+              alle weiteren hier gezeigten Marken gehören ihren jeweiligen Inhabern und
+              werden ausschließlich zu Studienzwecken verwendet. Sämtliche Inhalte,
+              Angebote und Verlinkungen sind nachgebaut und ohne Gültigkeit.
+            </p>
+          </aside>
+
+          <ul className="mt-8 flex flex-wrap gap-x-6">
             {legalLinks.map((link) => (
               <li key={link}>
                 <button
@@ -143,10 +161,10 @@ function Footer() {
             ))}
           </ul>
 
+          {/* Teil des Nachbaus, wie auf audi.de — der echte Hinweis steht oben. */}
           <p className="mt-6 text-fine text-ink-faint">© 2026 AUDI AG. Alle Rechte vorbehalten</p>
 
           <p className="mt-4 max-w-prose text-fine text-ink-faint text-pretty">
-            Studienprojekt zum Thema Responsive Design — keine offizielle Website der AUDI AG.
             Die Darstellung und Anordnung der Embleme kann von der Realität abweichen.
           </p>
         </div>
